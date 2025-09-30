@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Books Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { margin: 10px 0; }
+        input[type="text"] { padding: 5px; margin: 5px; }
+        button { padding: 5px 10px; margin: 2px; }
+        .actions { display: flex; gap: 5px; }
+        .create-form { background-color: #f9f9f9; padding: 15px; border-radius: 5px; }
+    </style>
 </head>
 <body>
+<h1>Books Management</h1>
+
+<!-- Show all books -->
+<h2>Book List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Color</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.color}"></td>
+        <td class="actions">
+            <!-- Update form -->
+            <form th:action="@{'/books/updatebook/' + ${book.id}}" method="post" style="display: inline;">
+                <input type="text" name="title" th:value="${book.title}" required>
+                <input type="text" name="color" th:value="${book.color}" required>
+                <button type="submit">Update</button>
+            </form>
+
+            <!-- Delete button -->
+            <form th:action="@{'/books/deletebook/' + ${book.id}}" method="post" style="display: inline;">
+                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Add new book form -->
+<div class="create-form">
+    <h2>Add New Book</h2>
+    <form th:action="@{/books/createbook}" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="color" placeholder="Color" required>
+        <button type="submit">Create Book</button>
+    </form>
+</div>
 
 </body>
 </html>

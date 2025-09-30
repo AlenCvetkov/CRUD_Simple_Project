@@ -2,17 +2,20 @@ package com.example.start.service.impl;
 
 import com.example.start.model.Book;
 import com.example.start.repo.BookRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
-public class BookServiceImpl implements BookService{
+
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
     @Override
     public Optional<Book> findById(Long id) {
         return  bookRepository.findById(id);
@@ -25,22 +28,30 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book create(String title, String color) {
-        bookRepository.save(new Book(title,color));
-        return null;
+        return  bookRepository.save(new Book(title,color));
     }
 
     @Override
     public Book update(Long id, String title, String color) {
       Optional<Book> b =  this.findById(id);
-        b.get().setTitle(title);
-        b.get().setColor(color);
-        return this.bookRepository.save(b.get());
+      if (b.isPresent()) {
+          Book book = b.get();
+          book.setTitle(title);
+          book.setColor(color);
+      }
+//         b.setTitle(title);
+//         b.get().setColor(color);
+        if(b.isPresent()) {
+            return this.bookRepository.save(b.get());
+        } else {
+            throw new RuntimeException("Book not found");
+        }
+
     }
 
     @Override
-    public Book delete(Long id) {
+    public void delete(Long id) {
         Optional<Book> b =  this.findById(id);
         this.bookRepository.delete(b.get());
-        return b.get();
     }
 }

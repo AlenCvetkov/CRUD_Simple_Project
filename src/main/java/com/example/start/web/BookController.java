@@ -7,18 +7,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 @Controller
-@AllArgsConstructor
 @RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
+
+    public BookController( BookService bookService){
+        this.bookService=bookService;
+    }
 
     @GetMapping
     public String getAllBooks(Model model){
         model.addAttribute("books", bookService.listAll());
         return "list";
     }
-    @PostMapping("/createBook")
+    @PostMapping("/createbook")
     public String create(@RequestParam String title,  @RequestParam String color){
         bookService.create(title,color);
         return "redirect:/books";
@@ -30,7 +33,7 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @PostMapping("/DeleteBook/{id}")
+    @PostMapping("/deletebook/{id}")
     public String delete( @PathVariable Long id){
         bookService.delete(id);
         return "redirect:/books";
