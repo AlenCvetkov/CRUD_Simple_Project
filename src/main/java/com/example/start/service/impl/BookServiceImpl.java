@@ -54,4 +54,15 @@ public class BookServiceImpl implements BookService {
         Optional<Book> b =  this.findById(id);
         this.bookRepository.delete(b.get());
     }
+
+    @Override
+    public List<Book> filterBooks(String keyword) {
+        return bookRepository.findBookByTitleContainingIgnoreCase(keyword);
+
+    }
+
+    @Override
+    public List<Book> filterColors(String keyword) {
+        return bookRepository.findBookByColorContainingIgnoreCase(keyword);
+    }
 }

@@ -10,4 +10,7 @@ public interface BookService {
     Book create(String title, String color);
     Book update(Long id, String title, String color);
     void delete(Long id);
+    List<Book> filterBooks(String keyword);
+
+    List<Book> filterColors(String keyword);
 }

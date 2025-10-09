@@ -38,4 +38,15 @@ public class BookController {
         bookService.delete(id);
         return "redirect:/books";
     }
+    @GetMapping("/filter")
+    public String filterTitle(@RequestParam String keyword, Model model){
+        model.addAttribute("books",bookService.filterBooks(keyword));
+        return "list";
+    }
+
+    @GetMapping("/filtercolor")
+    public String filterColor(@RequestParam String keyword, Model model){
+        model.addAttribute("books", bookService.filterColors(keyword));
+        return "list";
+    }
 }
