@@ -50,6 +50,8 @@
     <input type="text" name="keyword" placeholder="Search by Color">
     <button type="submit" >Search</button>
 </form>
+<p th:if="${noResultsT}">Book not found.</p>
+<p th:if="${noResultsC}">Book not found.</p>
 <!-- Add new book form -->
 <div class="create-form">
     <h2>Add New Book</h2>

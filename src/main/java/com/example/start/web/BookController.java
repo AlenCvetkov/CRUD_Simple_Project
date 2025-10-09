@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -40,13 +43,17 @@ public class BookController {
     }
     @GetMapping("/filter")
     public String filterTitle(@RequestParam String keyword, Model model){
-        model.addAttribute("books",bookService.filterBooks(keyword));
+        List<Book> results = bookService.filterColors(keyword);
+        model.addAttribute("books", results);
+        model.addAttribute("noResultsT", results.isEmpty());
         return "list";
     }
 
     @GetMapping("/filtercolor")
     public String filterColor(@RequestParam String keyword, Model model){
-        model.addAttribute("books", bookService.filterColors(keyword));
+        List<Book> results = bookService.filterColors(keyword);
+        model.addAttribute("books", results);
+        model.addAttribute("noResultsC", results.isEmpty());
         return "list";
     }
 }
